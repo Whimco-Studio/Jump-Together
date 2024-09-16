@@ -129,9 +129,9 @@ Please ensure that your code follows the project’s style and is well-documente
 
 We are using **GitHub Issues** to track bugs, feature requests, and improvements. You can view the **roadmap** in the **Projects** section of the repository.
 
-- Found a bug? [Create an Issue](https://github.com/yourusername/Quirkymals/issues).
-- Have a feature request? [Let us know](https://github.com/yourusername/Quirkymals/issues/new).
-- Want to see what's coming? [Check out the Roadmap](https://github.com/yourusername/Quirkymals/projects).
+- Found a bug? [Create an Issue](https://github.com/Whimco-Studio/Quirkymals-TS/issues).
+- Have a feature request? [Let us know](https://github.com/Whimco-Studio/Quirkymals-TS/issues/new).
+- Want to see what's coming? [Check out the Roadmap](https://github.com/Whimco-Studio/Quirkymals-TS/projects).
 
 ---
 
