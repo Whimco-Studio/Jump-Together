@@ -8,7 +8,6 @@ export function PanelRibbon() {
 	const [transition, transitionMotion] = useMotion(1);
 
 	const producer = useRootProducer();
-	const selectCharacterCreationPanelTab = useRootSelector((state) => state.interface.CharacterCreationPanelTab);
 
 	return (
 		<frame

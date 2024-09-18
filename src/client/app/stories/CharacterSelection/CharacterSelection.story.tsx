@@ -4,7 +4,8 @@ import { ReflexProvider } from "@rbxts/react-reflex";
 import { CreateReactStory } from "@rbxts/ui-labs";
 
 import { store } from "client/app/stores";
-import { PanelRibbon } from "client/app/components/CharacterCreation/LeftPanel/PanelRibbon";
+import { ItemSlot } from "client/app/components/ItemSlot";
+import { CharacterSelection } from "client/app/components/CharacterSelection";
 
 const story = CreateReactStory(
 	{
@@ -15,7 +16,7 @@ const story = CreateReactStory(
 	(props) => {
 		const component = (
 			<ReflexProvider producer={store}>
-				<PanelRibbon />
+				<CharacterSelection />
 			</ReflexProvider>
 		);
 

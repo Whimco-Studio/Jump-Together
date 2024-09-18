@@ -29,6 +29,19 @@ export const Images = {
 	},
 
 	CharacterSelection: {
+		LeftButton: "rbxassetid://14962576338",
+		RightButton: "rbxassetid://14962576341",
 		NewCharacter: "rbxassetid://14962576340",
+	},
+
+	CharacterCreation: {
+		NewCharacter: "rbxassetid://14962576340",
+		FinishedButton: "rbxassetid://15089218461",
+	},
+
+	ConfirmationPopUp: {
+		CancelButton: "rbxassetid://14377872183",
+		AcceptButton: "rbxassetid://14377889647",
+		BackgroundImage: "rbxassetid://14582294692",
 	},
 };

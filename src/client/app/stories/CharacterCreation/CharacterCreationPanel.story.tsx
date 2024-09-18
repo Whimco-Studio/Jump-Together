@@ -4,24 +4,22 @@ import { ReflexProvider } from "@rbxts/react-reflex";
 import { CreateReactStory } from "@rbxts/ui-labs";
 
 import { store } from "client/app/stores";
-import { ItemSlot } from "client/app/components/ItemSlot";
-import { AddNewCharacterButton } from "client/app/components/CharacterSelection/AddNewCharacterButton";
+import { CharacterCreationPanel } from "client/app/components/CharacterCreation/CharacterCreationPanel";
+import { useRootProducer } from "client/app/hooks";
 
 const story = CreateReactStory(
 	{
 		react: React,
 		reactRoblox: ReactRoblox,
-		controls: {},
+		// controls: {},
 	},
 	(props) => {
 		const component = (
 			<ReflexProvider producer={store}>
-				<AddNewCharacterButton
-					aspectRatio={1}
-					onClick={() => print("clicked")}
-					position={UDim2.fromScale(0.5, 0.5)}
+				<CharacterCreationPanel
 					anchorPoint={new Vector2(0.5, 0.5)}
-					springPosition={UDim2.fromScale(0.5, 1.5)}
+					position={UDim2.fromScale(0.5, 0.5)}
+					springPosition={UDim2.fromScale(-0.5, 0.5)}
 				/>
 			</ReflexProvider>
 		);

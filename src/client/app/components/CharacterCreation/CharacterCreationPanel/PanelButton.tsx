@@ -1,11 +1,11 @@
 import { composeBindings, useMotion } from "@rbxts/pretty-react-hooks";
-import React, { useEffect, useMemo } from "@rbxts/react";
+import React, { useEffect } from "@rbxts/react";
 import { useRootProducer, useRootSelector } from "client/app/hooks";
 import { Images } from "client/app/images";
 import { Theme } from "client/app/theme";
 
 interface PanelButtonProps {
-	tabName: string;
+	tabName: "Quirkymals" | "Accessories" | "Skins";
 	size: UDim2;
 	image: string;
 }
@@ -22,7 +22,7 @@ export function PanelButton({ tabName, image, size }: PanelButtonProps) {
 	const [selectionOutline, selectionOutlineMotion] = useMotion(0);
 
 	const producer = useRootProducer();
-	const selectCharacterCreationPanelTab = useRootSelector((state) => state.interface.CharacterCreationPanelTab);
+	const selectCharacterCreationPanelTab = useRootSelector((state) => state.characterCreation.Tab);
 
 	useEffect(() => {
 		if (selectCharacterCreationPanelTab === tabName) {

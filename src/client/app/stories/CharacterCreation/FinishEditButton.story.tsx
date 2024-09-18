@@ -4,18 +4,24 @@ import { ReflexProvider } from "@rbxts/react-reflex";
 import { CreateReactStory } from "@rbxts/ui-labs";
 
 import { store } from "client/app/stores";
-import { LeftPanel } from "client/app/components/CharacterCreation/LeftPanel";
+import { FinishedEditButton } from "client/app/components/CharacterCreation/FinishedEditButton";
 
 const story = CreateReactStory(
 	{
 		react: React,
 		reactRoblox: ReactRoblox,
-		// controls: {},
+		controls: {},
 	},
 	(props) => {
 		const component = (
 			<ReflexProvider producer={store}>
-				<LeftPanel />
+				<FinishedEditButton
+					aspectRatio={1}
+					onClick={() => print("clicked")}
+					position={UDim2.fromScale(0.5, 0.5)}
+					anchorPoint={new Vector2(0.5, 0.5)}
+					springPosition={UDim2.fromScale(0.5, 1.5)}
+				/>
 			</ReflexProvider>
 		);
 
