@@ -13,6 +13,8 @@ const story = CreateReactStory(
 		controls: {},
 	},
 	(props) => {
+		store.setPage("CharacterSelection");
+
 		const component = (
 			<ReflexProvider producer={store}>
 				<SelectionLabel

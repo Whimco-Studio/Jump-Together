@@ -15,6 +15,7 @@ const story = CreateReactStory(
 		controls: {},
 	},
 	(props) => {
+		store.setPage("CharacterCreation");
 		const component = (
 			<ReflexProvider producer={store}>
 				<CharacterCreation />

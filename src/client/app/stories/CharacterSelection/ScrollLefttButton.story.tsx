@@ -13,6 +13,8 @@ const story = CreateReactStory(
 		controls: {},
 	},
 	(props) => {
+		store.setPage("CharacterSelection");
+
 		const component = (
 			<ReflexProvider producer={store}>
 				<ScrollLeftButton position={UDim2.fromScale(0.5, 0.5)} springPosition={UDim2.fromScale(0.5, 1.5)} />
