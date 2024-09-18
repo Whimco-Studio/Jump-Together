@@ -15,7 +15,7 @@ const story = CreateReactStory(
 	(props) => {
 		const component = (
 			<ReflexProvider producer={store}>
-				<ItemSlot aspectRatio={0.909} />
+				<ItemSlot aspectRatio={0.909} index={0} />
 			</ReflexProvider>
 		);
 

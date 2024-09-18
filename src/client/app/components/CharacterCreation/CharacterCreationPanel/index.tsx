@@ -3,6 +3,7 @@ import { useMotion } from "@rbxts/pretty-react-hooks";
 import { PanelRibbon } from "./PanelRibbon";
 import { useRootSelector } from "client/app/hooks";
 import { Animation } from "client/app/animation";
+import { SlotContainer } from "./SlotContianer";
 
 interface CharacterCreationPanelProps {
 	anchorPoint?: Vector2;
@@ -41,6 +42,7 @@ export function CharacterCreationPanel({ anchorPoint, position, springPosition }
 				Size={UDim2.fromScale(1, 1)}
 			/>
 			<uiaspectratioconstraint AspectRatio={0.726} />
+			<SlotContainer />
 		</frame>
 	);
 }

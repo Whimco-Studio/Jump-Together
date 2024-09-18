@@ -1,6 +1,6 @@
 export const Animation = {
 	BUTTON_SPRING_SETTINGS: {
-		tension: 180,
+		tension: 250,
 		friction: 25,
 	},
 };

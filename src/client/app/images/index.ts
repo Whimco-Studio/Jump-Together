@@ -35,6 +35,8 @@ export const Images = {
 	},
 
 	CharacterCreation: {
+		ItemSlot: "rbxassetid://15089220589",
+		ItemSlotSelected: "rbxassetid://15098012805",
 		NewCharacter: "rbxassetid://14962576340",
 		FinishedButton: "rbxassetid://15089218461",
 	},
