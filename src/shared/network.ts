@@ -1,8 +1,6 @@
 import { Networking } from "@flamework/networking";
 
-interface ClientToServerEvents {
-	spawn: (player: Player, character: Model) => void;
-}
+interface ClientToServerEvents {}
 
 interface ServerToClientEvents {
 	spawn: (player: Player, character: Model) => void;

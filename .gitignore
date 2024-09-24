@@ -3,3 +3,17 @@
 /include
 *.tsbuildinfo
 flamework.build
+
+/dist
+
+.ENV
+*.code-workspace
+
+# Roblox related
+/*.rbxlx.lock
+/*.rbxl.lock
+**/*.rbx[lm]*
+sourcemap.json
+
+# For you Mac users
+.DS_Store

@@ -1,0 +1,1 @@
+interface ServerScriptService extends Instance {}

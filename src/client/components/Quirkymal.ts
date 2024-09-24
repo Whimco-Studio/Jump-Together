@@ -1,7 +1,10 @@
-import { OnPhysics, OnRender, OnStart } from "@flamework/core";
-import { Component, BaseComponent } from "@flamework/components";
+//!optimize 2
+
+import { BaseComponent, Component } from "@flamework/components";
+import { OnRender, OnStart } from "@flamework/core";
+import type { LogClass } from "@rbxts/rbxts-sleitnick-log";
 import { Players, Workspace } from "@rbxts/services";
-import Quirkify from "client/util/modules/Quirkify";
+import Quirkify from "shared/modules/Quirkify";
 
 interface Attributes {}
 
@@ -13,24 +16,24 @@ function setCameraSubject(character: PlayerRig) {
 @Component({
 	tag: "Visuals-Quirkymal",
 })
-export class MyComponent extends BaseComponent<Attributes, PlayerRig> implements OnStart, OnRender {
+export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> implements OnStart, OnRender {
 	private rootAttachment: Attachment | undefined;
 
-	constructor() {
+	public constructor(private readonly log: LogClass) {
 		super();
 
 		this.instance.HumanoidRootPart.Transparency = 1;
 	}
 
-	onStart() {
+	public onStart() {
 		// print(this.instance.HumanoidRootPart);
 
 		const quirkymal = this.instance.GetAttribute("Quirkymal") as string;
-		const visualInformation = Quirkify.addQuirkymal(this.instance, quirkymal !== undefined ? quirkymal : "Dove");
+		const visualInformation = Quirkify.addQuirkymal(this.instance, quirkymal === undefined ? "Dove" : quirkymal);
 		const addedAnimations = new Quirkify.AddAnimations(
 			visualInformation.appearanceRig,
 			visualInformation.animator,
-			quirkymal !== undefined ? quirkymal : "Dove",
+			quirkymal === undefined ? "Dove" : quirkymal,
 		);
 
 		this.rootAttachment = visualInformation.playerAttachment;

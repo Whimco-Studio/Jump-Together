@@ -1,9 +1,6 @@
 {
-	"name": "flamework-game",
-	"globIgnorePaths": [
-		"**/package.json",
-		"**/tsconfig.json"
-	],
+	"name": "roblox-ts-game",
+	"globIgnorePaths": ["**/package.json", "**/tsconfig.json"],
 	"tree": {
 		"$className": "DataModel",
 		"ServerScriptService": {
@@ -28,15 +25,14 @@
 			},
 			"TS": {
 				"$path": "out/shared"
-			}
+			},
+			"typescript-types": { "$path": "out/types" }
 		},
 		"StarterPlayer": {
 			"$className": "StarterPlayer",
 			"StarterPlayerScripts": {
 				"$className": "StarterPlayerScripts",
-				"TS": {
-					"$path": "out/client"
-				}
+				"TS": { "$path": "out/client" }
 			}
 		},
 		"Workspace": {
@@ -56,6 +52,13 @@
 			"$properties": {
 				"RespectFilteringEnabled": true
 			}
+		},
+		"TestService": {
+			"$className": "TestService",
+			"$properties": {
+				"ExecuteWithStudioRun": true
+			},
+			"$path": "test"
 		}
 	}
 }
