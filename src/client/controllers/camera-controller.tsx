@@ -1,6 +1,6 @@
 import { Controller, OnInit, OnStart } from "@flamework/core";
-import { store } from "shared/app/stores";
-import { getCameraShot } from "shared/app/stores/camera";
+import { clientProducer } from "client/store";
+import { getCameraShot } from "client/store/slices/camera";
 
 @Controller({})
 export class CameraController implements OnStart, OnInit {
@@ -11,7 +11,7 @@ export class CameraController implements OnStart, OnInit {
 	}
 
 	listenToCameraShot() {
-		store.subscribe(getCameraShot, (CameraShot) => {
+		clientProducer.subscribe(getCameraShot, (CameraShot) => {
 			print(CameraShot);
 		});
 	}

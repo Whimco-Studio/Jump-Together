@@ -7,11 +7,11 @@ import { StrictMode } from "@rbxts/react";
 import { ReflexProvider } from "@rbxts/react-reflex";
 import { createPortal, createRoot } from "@rbxts/react-roblox";
 import { Players } from "@rbxts/services";
+import { App } from "client/app";
+import { useStore } from "client/app/hooks/use-store";
 import { CameraShots } from "client/enums/cameraShots";
-import { App } from "shared/app";
-import { useStore } from "shared/app/hooks/use-store";
-import { store } from "shared/app/stores";
-import { getCurrentPage } from "shared/app/stores/Interface";
+import { clientProducer } from "client/store";
+import { getCurrentPage } from "client/store/slices/Interface";
 
 @Controller({})
 export class InterfaceController implements OnInit, OnStart {
@@ -20,12 +20,12 @@ export class InterfaceController implements OnInit, OnStart {
 	public onInit() {}
 
 	public onStart() {
-		this.mountGui();
+		// this.mountGui();
 		this.listenToPageChange();
 	}
 
 	private listenToPageChange() {
-		store.subscribe(getCurrentPage, (Page) => {
+		clientProducer.subscribe(getCurrentPage, (Page) => {
 			useStore().setCameraShot(CameraShots[Page as keyof typeof CameraShots] || CameraShots.Default);
 		});
 	}
@@ -40,7 +40,7 @@ export class InterfaceController implements OnInit, OnStart {
 		root.render(
 			<StrictMode>
 				{createPortal(
-					<ReflexProvider producer={store}>
+					<ReflexProvider producer={clientProducer}>
 						<App />
 					</ReflexProvider>,
 					ScreenGui,

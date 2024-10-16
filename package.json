@@ -23,8 +23,14 @@
 		"watch": "bunx rbxtsc -w"
 	},
 	"rbxts-build": {
-		"rbxtscArgs": ["--verbose", "--optimizedLoops"],
-		"rojoBuildArgs": ["--output", "game.rbxl"],
+		"rbxtscArgs": [
+			"--verbose",
+			"--optimizedLoops"
+		],
+		"rojoBuildArgs": [
+			"--output",
+			"game.rbxl"
+		],
 		"syncLocation": "src/types/services.d.ts",
 		"dev": false,
 		"wslUseExe": false,
@@ -45,20 +51,20 @@
 		"@rbxts/types": "^1.0.806",
 		"@typescript-eslint/eslint-plugin": "^7.18.0",
 		"@typescript-eslint/parser": "^7.18.0",
+		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-perfectionist": "^2.11.0",
 		"eslint-plugin-prettier": "^5.2.1",
 		"eslint-plugin-react-roblox-hooks": "^5.1.0-rbx.1",
 		"eslint-plugin-roblox-ts": "^0.0.36",
 		"eslint-plugin-unicorn": "^55.0.0",
-		"eslint": "^8.57.0",
 		"prettier": "^3.3.3",
 		"rbxts-build": "^2.4.0",
 		"rbxts-transformer-flamework": "^1.2.3",
 		"rbxts-transformer-services": "^1.1.1",
 		"rimraf": "^6.0.1",
 		"roblox-ts": "^3.0.0",
-		"typescript": "^5.6.2"
+		"typescript": "^5.5.3"
 	},
 	"dependencies": {
 		"@flamework/components": "^1.2.3",

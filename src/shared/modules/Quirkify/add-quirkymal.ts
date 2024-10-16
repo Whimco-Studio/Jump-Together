@@ -22,7 +22,7 @@ export function addQuirkymal(character: PlayerRig, _quirkymal: string) {
 	appearanceRig.HumanoidRootPart.CanCollide = false;
 	appearanceRig.Parent = character;
 
-	const playerAttachment = createAttachment(character.HumanoidRootPart);
+	const playerAttachment = createAttachment(character.HumanoidRootPart as MeshPart);
 	playerAttachment.CFrame = new CFrame(0, -character.HumanoidRootPart.Size.Y / 2, 0);
 
 	const appearanceAttachment = createAttachment(appearanceRig.HumanoidRootPart);
@@ -32,6 +32,8 @@ export function addQuirkymal(character: PlayerRig, _quirkymal: string) {
 	RigidConstraint.Attachment0 = playerAttachment;
 	RigidConstraint.Attachment1 = appearanceAttachment;
 	RigidConstraint.Parent = appearanceRig;
+
+	appearanceAttachment.AddTag("Visuals_TiltCharacter");
 
 	return { animator, appearanceRig, playerAttachment };
 }

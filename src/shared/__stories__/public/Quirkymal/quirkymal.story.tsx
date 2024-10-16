@@ -32,12 +32,12 @@ const controls = {
 const story = {
 	controls: controls,
 	render: (properties: InferGenericProps<typeof controls>) => {
-		const component = ReplicatedStorage.Assets.StarterCharacter.Clone() as PlayerRig;
+		const component = ReplicatedStorage.StarterCharacter.Clone() as PlayerRig;
 		component.Parent = Workspace;
 		component.Name = "Quirkymal-StoryRig";
 		component.HumanoidRootPart.Transparency = 1;
 		component.PivotTo(
-			Workspace.Spawn.CFrame.mul(new CFrame(0, Workspace.Spawn.Size.Y / 2, 0)).mul(
+			Workspace.Spawns.SpawnLocation.CFrame.mul(new CFrame(0, Workspace.Spawns.SpawnLocation.Size.Y / 2, 0)).mul(
 				new CFrame(0, component.HumanoidRootPart.Size.Y / 2, 0),
 			),
 		);

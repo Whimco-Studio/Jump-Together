@@ -7,9 +7,19 @@ interface _G {
 
 interface PlayerRig extends Model {
 	Humanoid: Humanoid;
-	HumanoidRootPart: MeshPart;
+	HumanoidRootPart: BasePart;
 }
 
 interface QuirkymalAppearance extends Model {
 	HumanoidRootPart: MeshPart;
+}
+
+interface QuirkymalPlayer {
+	Appearance: QuirkymalAppearance;
+}
+
+interface Lobby {
+	readonly Host: Player;
+	readonly ID: string;
+	readonly Players: readonly Player[];
 }
