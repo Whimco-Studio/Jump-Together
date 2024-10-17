@@ -32,10 +32,16 @@ export class QuirkymalService implements OnStart, OnInit {
 					for (const player of LobbyFromPlayer.Players) {
 						this.addCharacter(player);
 					}
+				} else {
+					this.addCharacter(player);
 				}
 			} else {
 				this.addCharacter(player);
 			}
+		});
+
+		Events.CheckpointReached.connect((player: Player, checkpoint: BasePart) => {
+			this.SaveSpawns[player.UserId] = checkpoint;
 		});
 	}
 

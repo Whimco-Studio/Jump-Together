@@ -34,6 +34,7 @@ export function addQuirkymal(character: PlayerRig, _quirkymal: string) {
 	RigidConstraint.Parent = appearanceRig;
 
 	appearanceAttachment.AddTag("Visuals_TiltCharacter");
+	appearanceRig.HumanoidRootPart.AddTag("Visuals_CosmeticRoot");
 
 	return { animator, appearanceRig, playerAttachment };
 }

@@ -20,7 +20,7 @@ export class InterfaceController implements OnInit, OnStart {
 	public onInit() {}
 
 	public onStart() {
-		// this.mountGui();
+		this.mountGui();
 		this.listenToPageChange();
 	}
 

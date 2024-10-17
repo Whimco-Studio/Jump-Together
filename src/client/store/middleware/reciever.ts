@@ -29,7 +29,6 @@ export function receiverMiddleware(): ProducerMiddleware {
 	});
 
 	Events.store.hydrate.connect((state) => {
-		print("Hydrating");
 		receiver.hydrate(stateSerDes.deserialize(state.buffer, state.blobs));
 	});
 

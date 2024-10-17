@@ -5,6 +5,7 @@ import { BroadcastAction } from "@rbxts/reflex";
 interface ClientToServerEvents {
 	ButtonPressed: (Button: BasePart, PressedAt: number) => undefined;
 
+	CheckpointReached: (Origin: BasePart) => undefined;
 	// Ropey
 	CreateLobby: () => undefined;
 	JoinLobby: (ID: string) => undefined;

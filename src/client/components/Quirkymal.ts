@@ -3,7 +3,8 @@
 import { BaseComponent, Component } from "@flamework/components";
 import { OnRender, OnStart } from "@flamework/core";
 import type { LogClass } from "@rbxts/rbxts-sleitnick-log";
-import { Players, Workspace } from "@rbxts/services";
+import { Players, ReplicatedStorage, Workspace } from "@rbxts/services";
+import Particles from "shared/modules/Feel/Particles";
 import Quirkify from "shared/modules/Quirkify";
 
 interface Attributes {}
@@ -43,7 +44,8 @@ export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> imp
 			setCameraSubject(this.instance);
 		}
 
-		this.AddBillboardGui(Player, visualInformation.appearanceRig.HumanoidRootPart);
+		this.addBillboardGui(Player, visualInformation.appearanceRig.HumanoidRootPart);
+		this.addParticles(this.instance);
 	}
 
 	onRender(dt: number): void {
@@ -52,7 +54,20 @@ export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> imp
 		// Quirkify.addRotations(this.rootAttachment, dt);
 	}
 
-	private AddBillboardGui(Player: Player | undefined, CosmeticRig: BasePart) {
+	private addParticles(Character: Model) {
+		if (!Players.GetPlayerFromCharacter(Character)) return;
+
+		const ParticleObject = Particles.create(
+			Character,
+			Character.WaitForChild("Humanoid", 5) as Humanoid,
+			ReplicatedStorage.Assets.Cloud,
+		);
+		Particles.Toggle(ParticleObject, true);
+
+		print(ParticleObject);
+	}
+
+	private addBillboardGui(Player: Player | undefined, CosmeticRig: BasePart) {
 		const billboardGui = new Instance("BillboardGui");
 		billboardGui.Name = "BillboardGui";
 		billboardGui.Active = true;

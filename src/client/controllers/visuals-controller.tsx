@@ -18,7 +18,7 @@ export class VisualsController implements OnInit, OnStart {
 		clientProducer.subscribe(
 			(state) => state.equipment,
 			(equipment) => {
-				print(equipment);
+				// print(equipment);
 			},
 		);
 	}

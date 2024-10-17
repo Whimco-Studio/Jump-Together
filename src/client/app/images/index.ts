@@ -18,6 +18,7 @@ export const Images = {
 		CancelButton: "rbxassetid://14377872183",
 	},
 
+	Home: {},
 	Icons: {
 		CharacterCreation: {
 			Accessories: "rbxassetid://14982222783",
@@ -27,12 +28,27 @@ export const Images = {
 			Skins: "rbxassetid://14982222303",
 			SkinsSelected: "rbxassetid://15104980473",
 		},
+		Global: {
+			ArrowUp: "rbxassetid://123217965069905",
+			Coin: "rbxassetid://95890515393313",
+			DecrementBackground: "rbxassetid://79798745886268",
+			IncrementBackground: "rbxassetid://96391043842663",
+		},
+
 		HubPanelButtons: {
 			Inventory: "rbxassetid://15409766154",
 			Map: "rbxassetid://15409765950",
 			Quests: "rbxassetid://15409765645",
 			Quirkymals: "rbxassetid://15409765814",
 		},
+
+		LeftPanelButtons: {
+			Checkpoints: "rbxassetid://83337911314515",
+			Gamepasses: "rbxassetid://78218886802628",
+			Inventory: "rbxassetid://89757818368764",
+			Shop: "rbxassetid://113691353744022",
+		},
+
 		Unsorted: {
 			Backwear: "rbxassetid://14161636603",
 			Cancel: "rbxassetid://15104092640",
