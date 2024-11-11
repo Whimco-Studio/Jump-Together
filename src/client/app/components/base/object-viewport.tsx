@@ -6,6 +6,7 @@ interface Properties extends React.PropsWithChildren {
 	readonly ExtraCameraDepth?: number;
 	readonly Native: React.InstanceProps<ViewportFrame>;
 	readonly Object: BasePart | Model;
+	readonly PivotOffset?: CFrame;
 }
 
 function getCameraOffset(fov: number, extentsSize: Vector3): number {
@@ -63,7 +64,13 @@ function setDefaultCameraView(camera: Camera, model: Model, cameraDepth = 0): vo
  * ```
  *
  */
-export default function ObjectViewport({ ExtraCameraDepth, Native, Object, children }: Properties): React.Element {
+export default function ObjectViewport({
+	ExtraCameraDepth,
+	Native,
+	Object,
+	PivotOffset,
+	children,
+}: Properties): React.Element {
 	// Setup the viewport after mounting when we have a ref to it
 	const viewportReference = useRef<ViewportFrame>();
 
@@ -79,6 +86,7 @@ export default function ObjectViewport({ ExtraCameraDepth, Native, Object, child
 			});
 		}
 
+		print(model);
 		model.Parent = viewport;
 
 		const viewportCamera = new Instance("Camera");
@@ -91,6 +99,10 @@ export default function ObjectViewport({ ExtraCameraDepth, Native, Object, child
 			(model.PrimaryPart as BasePart | undefined) || (model.FindFirstChild("HumanoidRootPart") as BasePart);
 		if (Root) {
 			Root.CFrame = Root.CFrame.mul(CFrame.fromEulerAnglesXYZ(-math.pi / 8, -math.pi / 1.25, 0));
+		}
+
+		if (PivotOffset) {
+			Root.CFrame = Root.CFrame.mul(PivotOffset);
 		}
 	});
 

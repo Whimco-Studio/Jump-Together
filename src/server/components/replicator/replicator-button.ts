@@ -17,14 +17,11 @@ export class ReplicatorButton extends BaseComponent<Attributes, BasePart> implem
 
 	public onStart() {
 		const ObjectValue = this.instance.FindFirstChildOfClass("ObjectValue") as ObjectValue | undefined;
-
 		if (!ObjectValue) {
 			this.log.Warning(`No ObjectValue found in ${this.instance}`);
 			return;
 		}
-
 		const Value = ObjectValue.Value;
-
 		if (Value) {
 			Value.Parent = ServerStorage.ButtonPathways;
 			this.instance.AddTag("Visuals_Button");

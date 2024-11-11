@@ -96,7 +96,8 @@ export function ItemSlot({ anchorPoint, aspectRatio, frameSize, image, index, it
 							TabToFunction[CurrentPanelTab](item.Name);
 						}
 
-						task.delay(0.2, () => {
+						task.defer(() => {
+							task.wait(0.2);
 							sizeMotion.spring(BUTTON_STATE_SIZES.DEFAULT, SPRING_SETTINGS);
 						});
 					},

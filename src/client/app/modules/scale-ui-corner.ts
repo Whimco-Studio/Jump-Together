@@ -10,6 +10,7 @@
  * A module for creating relatively scaled UI corners.
  */
 
+import { cameraViewportYield } from "./camera-viewport-yield";
 import { Workspace } from "@rbxts/services";
 
 // Private Functions
@@ -20,6 +21,8 @@ function getAverage(vector: Vector2): number {
 // Variables
 const STUDIO_SCREEN_SIZE = new Vector2(1366, 767); // change to your studio resolution
 const camera = Workspace.CurrentCamera!;
+
+cameraViewportYield();
 
 const studioAverage = getAverage(STUDIO_SCREEN_SIZE);
 let currentScreenAverage = getAverage(camera.ViewportSize);

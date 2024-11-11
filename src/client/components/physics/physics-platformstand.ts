@@ -25,11 +25,18 @@ export class PhysicsPlatformstand extends BaseComponent<Attributes, Humanoid> im
 
 		if (Character && AttemptCharacter.Name === Player.DisplayName) {
 			const AngularVelocity = this.CreatRagDollForce(AttemptCharacter.HumanoidRootPart) as AngularVelocity;
+			let Connection: RBXScriptConnection | undefined = undefined;
 
 			this.instance.SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, false);
-			this.instance.GetPropertyChangedSignal("PlatformStand").Connect(() => {
+			Connection = this.instance.GetPropertyChangedSignal("PlatformStand").Connect(() => {
 				this.CutForces();
 				this.ToggleRagdoll(AngularVelocity);
+			});
+
+			this.instance.Destroying.Once(() => {
+				if (Connection) {
+					Connection.Disconnect();
+				}
 			});
 		}
 	}
@@ -82,7 +89,8 @@ export class PhysicsPlatformstand extends BaseComponent<Attributes, Humanoid> im
 
 		Humanoid.ChangeState(Enum.HumanoidStateType.Physics);
 
-		task.delay(this.RagDollDuration, () => {
+		task.defer(() => {
+			task.wait(this.RagDollDuration);
 			if (math.abs(tick() - PlatformElapse) > this.RagDollDuration) {
 				AngularVelocity.Enabled = false;
 				Humanoid.ChangeState(Enum.HumanoidStateType.Jumping);

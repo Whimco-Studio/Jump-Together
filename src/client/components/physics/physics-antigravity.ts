@@ -7,6 +7,9 @@ import { Players, RunService, Workspace } from "@rbxts/services";
 
 interface Attributes {}
 
+const MaxFallHeight = 7;
+const MaxRagdollTime = 3;
+
 @Component({
 	tag: "Physics_AntiGravity",
 })
@@ -33,7 +36,11 @@ export class PhysicsAntigravity extends BaseComponent<Attributes, VectorForce> i
 			task.wait();
 		}
 
-		if (!Character || !this.instance.IsDescendantOf(Character)) {
+		if (
+			!Character ||
+			!this.instance.IsDescendantOf(Character) ||
+			Players.GetPlayerFromCharacter(Character) !== Players.LocalPlayer
+		) {
 			return;
 		}
 
@@ -78,17 +85,17 @@ export class PhysicsAntigravity extends BaseComponent<Attributes, VectorForce> i
 					//// Check if we should ragdoll the player
 					if (
 						RaycastResults &&
-						RaycastResults.Distance < 5 &&
-						math.abs(StartPosition.Y - Root.Position.Y) > 5 &&
+						RaycastResults.Distance < MaxFallHeight &&
+						math.abs(StartPosition.Y - Root.Position.Y) > MaxFallHeight &&
 						Humanoid.GetState() !== Enum.HumanoidStateType.Physics
 					) {
 						Humanoid.ChangeState(Enum.HumanoidStateType.Physics);
 						// Root:ApplyAngularImpulse(Vector3.one * 1000)
 
-						task.spawn(() => {
+						task.defer(() => {
 							const RagStart = tick();
 
-							while (tick() - RagStart <= 5 || Root.AssemblyLinearVelocity.Y >= 1) {
+							while (tick() - RagStart <= MaxRagdollTime || Root.AssemblyLinearVelocity.Y >= 1) {
 								RunService.RenderStepped.Wait();
 							}
 

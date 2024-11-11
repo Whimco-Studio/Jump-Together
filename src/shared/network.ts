@@ -1,21 +1,29 @@
+import { QuirkymalTuning } from "./modules/tuning/quirkymals-tuning";
 import { SerializedSharedState } from "./store";
 import { Networking } from "@flamework/networking";
 import { BroadcastAction } from "@rbxts/reflex";
 
+type Quirkymal = keyof typeof QuirkymalTuning;
 interface ClientToServerEvents {
 	ButtonPressed: (Button: BasePart, PressedAt: number) => undefined;
 
+	BuyQuirkymal: (Quirkymal: Quirkymal) => undefined;
+	BuySkin: (Skin: Quirkymal) => undefined;
 	CheckpointReached: (Origin: BasePart) => undefined;
 	// Ropey
 	CreateLobby: () => undefined;
+	EquipQuirkymal: (Quirkymal: Quirkymal) => undefined;
+	EquipSkin: (Skin: Quirkymal) => undefined;
 	JoinLobby: (ID: string) => undefined;
+
 	LeaveLobby: () => undefined;
+
 	RefreshLobbies: () => undefined;
+	Reset: () => undefined;
+
 	Respawn: (from: string) => undefined;
 	ServerLogLobbies: () => undefined;
-
 	UpdateLobby: () => undefined;
-
 	// Reflex
 	store: {
 		/**

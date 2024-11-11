@@ -52,7 +52,8 @@ Particle.Create = function(ParticleName, Parent)
 
 	Particle.ToggleEmitters(Effect, true)
 
-	task.delay(Effect:GetAttribute("Duration"), function()
+	task.defer(function()
+		task.wait(Effect:GetAttribute("Duration"))
 		Particle.ToggleEmitters(Effect, false)
 		task.wait(Effect:GetAttribute("Duration"))
 		Effect:Destroy()

@@ -76,7 +76,7 @@ function Particles.CreateParticle(key: string | {})
 	local self = Checker(key)
 
 	if self.ActiveParticles >= MAX_PARTICLES then
-		print("Max Particles Reached")
+		-- print("Max Particles Reached")
 		return -- Don't create more particles if the max limit is reached
 	end
 
@@ -87,17 +87,18 @@ function Particles.CreateParticle(key: string | {})
 		or CurrentState == Enum.HumanoidStateType.Freefall
 		or CurrentState == Enum.HumanoidStateType.FallingDown
 	then
-		print("Not Creating Particle")
+		-- print("Not Creating Particle")
 		return
 	end
 
 	local Particle = MakeParticle(self.Mesh, self.Base.CFrame * self.Offset, self.Cache)
 	Lerp.Size(Particle, Particle.Size * math.random(70, 100) / 100, 0.25, true)
 
-	print(Particle)
+	-- print(Particle)
 
 	self.ActiveParticles += 1
-	task.delay(1, function()
+	task.defer(function()
+		task.wait(1)
 		-- Cache the particle for reuse
 		table.insert(self.Cache, Particle)
 		self.ActiveParticles -= 1
@@ -118,7 +119,8 @@ function Particles.CreateRadialParticle(key: string | {}, Destination: Vector3)
 	Lerp.Size(Particle, Vector3.new(), 0.25)
 
 	self.ActiveParticles += 1
-	task.delay(1, function()
+	task.defer(function()
+		task.wait(1)
 		-- Cache the particle for reuse
 		table.insert(self.Cache, Particle)
 		self.ActiveParticles -= 1
@@ -154,12 +156,12 @@ function Particles.Connect(key: string | {})
 	local self = Checker(key)
 
 	local function onMove()
-		print("Moving 1", self.Humanoid.MoveDirection.Magnitude)
+		-- print("Moving 1", self.Humanoid.MoveDirection.Magnitude)
 		if self.Humanoid.MoveDirection.Magnitude > 0 and not self.Active then
 			self.Active = true
-			print("Moving 2")
+			-- print("Moving 2")
 			while self.Active and self.Connections and self.Connections["MoveDirection"] do
-				print("Creating Particle")
+				-- print("Creating Particle")
 				Particles.CreateParticle(self)
 				task.wait(0.05) -- Create particles less frequently
 			end

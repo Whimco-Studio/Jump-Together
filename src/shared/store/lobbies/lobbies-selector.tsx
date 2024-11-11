@@ -1,4 +1,5 @@
 import { Object } from "@rbxts/luau-polyfill";
+import { createSelector } from "@rbxts/reflex";
 import { SharedState } from "shared/store";
 
 export const getPlayerFromLobby = (state: SharedState, Player: Player) => {
@@ -17,6 +18,11 @@ export const getCharacterFromPlayer = (state: SharedState, Player: Player) => {
 
 export const GetHosts = (state: SharedState) => state.lobbies.Hosts;
 export const GetLobbies = (state: SharedState) => state.lobbies.Lobby;
+
+export const GetLobbiesAndHosts = createSelector(GetLobbies, GetHosts, (lobbies, hosts) => ({
+	hosts,
+	lobbies,
+}));
 
 export const GetPlayersFromLobby = (ID: string) => {
 	return (state: SharedState) => {

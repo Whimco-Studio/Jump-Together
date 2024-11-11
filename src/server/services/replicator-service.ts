@@ -34,7 +34,8 @@ export class ReplicatorService implements OnInit, OnStart {
 			Value.Parent = Workspace;
 
 			// Task Delay for CooldownTime including PressedAt
-			task.delay(CooldownTime - (tick() - PressedAt), () => {
+			task.defer(() => {
+				task.wait(CooldownTime - (tick() - PressedAt));
 				Value.Parent = ServerStorage.ButtonPathways;
 			});
 		});

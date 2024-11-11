@@ -11,7 +11,15 @@ interface PlayerRig extends Model {
 }
 
 interface QuirkymalAppearance extends Model {
-	HumanoidRootPart: MeshPart;
+	HumanoidRootPart: {
+			root: Bone & {
+				body: Bone & {
+					[index: string]: Bone;
+					HeadWear: Bone;
+				};
+			};
+		} & MeshPart;
+	};
 }
 
 interface QuirkymalPlayer {
@@ -22,4 +30,10 @@ interface Lobby {
 	readonly Host: Player;
 	readonly ID: string;
 	readonly Players: readonly Player[];
+}
+
+// type QuirkymalName = keyof typeof QuirkymalTuning;
+
+interface HeadWearItem extends MeshPart {
+	Attachment: Attachment;
 }

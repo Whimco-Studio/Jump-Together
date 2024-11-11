@@ -1,2 +1,2 @@
-export * from "./interface-slice";
 export * from "./interface-selectors";
+export * from "./interface-slice";

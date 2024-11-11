@@ -6,10 +6,11 @@ import React from "@rbxts/react";
 import { StrictMode } from "@rbxts/react";
 import { ReflexProvider } from "@rbxts/react-reflex";
 import { createPortal, createRoot } from "@rbxts/react-roblox";
-import { Players } from "@rbxts/services";
+import { Players, RunService, StarterGui } from "@rbxts/services";
 import { App } from "client/app";
 import { useStore } from "client/app/hooks/use-store";
 import { CameraShots } from "client/enums/cameraShots";
+import { Events } from "client/network";
 import { clientProducer } from "client/store";
 import { getCurrentPage } from "client/store/slices/Interface";
 
@@ -21,6 +22,7 @@ export class InterfaceController implements OnInit, OnStart {
 
 	public onStart() {
 		this.mountGui();
+		this.handleReset();
 		this.listenToPageChange();
 	}
 
@@ -35,6 +37,8 @@ export class InterfaceController implements OnInit, OnStart {
 		const ScreenGui = new Instance("ScreenGui");
 		ScreenGui.Name = "Quirkymal";
 		ScreenGui.Parent = PlayerGui;
+		ScreenGui.IgnoreGuiInset = true;
+		ScreenGui.ResetOnSpawn = false;
 
 		const root = createRoot(ScreenGui);
 		root.render(
@@ -47,5 +51,29 @@ export class InterfaceController implements OnInit, OnStart {
 				)}
 			</StrictMode>,
 		);
+	}
+
+	private handleReset() {
+		const ResetEvent = new Instance("BindableEvent");
+		ResetEvent.Event.Connect(() => {
+			Events.Respawn.fire("Reset");
+		});
+
+		const MAX_RETRIES = 8;
+
+		const coreCall = () => {
+			for (let retries = 1; retries <= MAX_RETRIES; retries++) {
+				const success = pcall(() => {
+					StarterGui.SetCore("ResetButtonCallback", ResetEvent);
+				});
+				if (success[0]) {
+					break;
+				}
+				RunService.Stepped.Wait();
+				task.wait(0.1);
+			}
+		};
+
+		coreCall();
 	}
 }

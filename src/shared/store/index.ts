@@ -1,6 +1,6 @@
 import { equipmentSlice } from "./equipment/equipment-slice";
 import { lobbiesSlice } from "./lobbies/lobbies-slice";
-import { petSlice } from "./pet/pet-slice";
+import { playersSlice } from "./players/players-slice";
 import { templateSlice } from "./template/template-slice";
 import { tradeSlice } from "./trading/trade-slice";
 import { createBinarySerializer } from "@rbxts/flamework-binary-serializer";
@@ -14,7 +14,7 @@ export const stateSerDes = createBinarySerializer<SharedState>();
 export const slices = {
 	equipment: equipmentSlice,
 	lobbies: lobbiesSlice,
-	pet: petSlice,
+	players: playersSlice,
 	template: templateSlice,
 	trading: tradeSlice,
 };

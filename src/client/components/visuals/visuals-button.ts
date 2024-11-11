@@ -8,6 +8,8 @@ import { Events } from "client/network";
 
 interface Attributes {}
 
+const PLANE_HEIGHT = 0;
+
 @Component({
 	tag: "Visuals_Button",
 })
@@ -17,9 +19,23 @@ export class VisualsButton extends BaseComponent<Attributes, BasePart> implement
 	private OnCooldown: number | undefined;
 	private Pressed: boolean | undefined;
 	private CooldownTime: number;
+	private Plane: Part;
 
 	public constructor(private readonly log: LogClass) {
 		super();
+
+		const Plane = new Instance("Part");
+		Plane.Name = "Plane";
+		Plane.Transparency = 0.5;
+		Plane.Material = Enum.Material.SmoothPlastic;
+		Plane.Shape = Enum.PartType.Block;
+		Plane.Size = new Vector3(this.instance.Size.X, PLANE_HEIGHT, this.instance.Size.Z);
+		Plane.CFrame = this.instance.CFrame.mul(new CFrame(0, this.instance.Size.Y / 2 + PLANE_HEIGHT / 2, 0));
+		Plane.Anchored = true;
+		Plane.CanCollide = false;
+		Plane.Parent = this.instance;
+
+		this.Plane = Plane;
 
 		this.shapecastParameters = new RaycastParams();
 		this.shapecastParameters.FilterType = Enum.RaycastFilterType.Include;
@@ -59,7 +75,7 @@ export class VisualsButton extends BaseComponent<Attributes, BasePart> implement
 		}
 
 		const shapecastResult = Workspace.Shapecast(
-			Button,
+			this.Plane,
 			Button.CFrame.UpVector.mul(Button.Size.Y * 1.5),
 			this.shapecastParameters,
 		);
@@ -82,7 +98,7 @@ export class VisualsButton extends BaseComponent<Attributes, BasePart> implement
 	}
 
 	onRender(dt: number): void {
-		task.delay(0, () => {
+		task.defer(() => {
 			this.HandleLogic();
 		});
 

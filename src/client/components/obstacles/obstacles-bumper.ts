@@ -70,9 +70,11 @@ export class ObstaclesBumper extends BaseComponent<Attributes, BasePart> impleme
 		bodyVelocity.P = math.huge;
 		bodyVelocity.Parent = HumanoidRootPart;
 
-		task.delay(0.25, () => {
+		task.defer(() => {
+			task.wait(0.25);
 			bodyVelocity.Destroy();
-			task.delay(0.75, () => {
+			task.defer(() => {
+				task.wait(0.75);
 				Humanoid.PlatformStand = false;
 				Humanoid.Jump = true;
 

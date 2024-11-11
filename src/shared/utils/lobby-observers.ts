@@ -1,28 +1,33 @@
 import { observeCharacterForPlayer } from "./character-observers";
+import Log from "@rbxts/rbxts-sleitnick-log";
 import RopeSystem from "shared/modules/Ropey/rope-lobby";
 import { slices } from "shared/store";
+
+const LobbyObserver = Log.ForName("LobbyObserver");
 
 export function observeLobby(Lobby: Lobby, observer: (Lobby: Lobby) => (() => void) | undefined) {
 	const unsubscribeCallbacks: (() => void)[] = [];
 
 	const RopeLobby = new RopeSystem(Lobby.Players);
 
-	print("Observing Lobby:", Lobby.ID);
+	// print("Observing Lobby:", Lobby.ID);
+	LobbyObserver.Info(`Observing Lobby: ${Lobby.ID}`);
 
 	const unsubscribe = slices.lobbies.subscribe((state) => {
 		observer(Lobby);
 	});
 
 	const observeLobbyPlayersUnsubscribe = observeLobbyPlayers(Lobby, RopeLobby, (Players) => {
-		print("Observing Players in Lobby:", Lobby.ID, Players);
+		// print("Observing Players in Lobby:", Lobby.ID, Players);
+		LobbyObserver.Info(`Observing Players in Lobby: ${Lobby.ID}`, Players);
 		return () => {}; // Ensure the function returns undefined
 	});
 
 	unsubscribeCallbacks.push(observeLobbyPlayersUnsubscribe);
 
 	return () => {
-		warn("Unsubscribing from lobby", Lobby.ID);
-
+		// warn("Unsubscribing from lobby", Lobby.ID);
+		LobbyObserver.Warning(`Unsubscribing from lobby: ${Lobby.ID}`);
 		for (const subLevelUnsubscribe of unsubscribeCallbacks) {
 			subLevelUnsubscribe();
 		}
@@ -43,7 +48,8 @@ export function observeLobbyPlayers(
 		observer(Lobby.Players);
 	});
 
-	print("Observing Players in Lobby:", Lobby.ID);
+	// print("Observing Players in Lobby:", Lobby.ID);
+	LobbyObserver.Info(`Observing Players in Lobby: ${Lobby.ID}`);
 	RopeLobby.setPlayers(Lobby.Players);
 
 	for (const Player of Lobby.Players) {
@@ -60,7 +66,7 @@ export function observeLobbyPlayers(
 	}
 
 	return () => {
-		warn("Unsubscribing from lobby players in", Lobby.ID);
+		LobbyObserver.Warning(`Unsubscribing from lobby players in: ${Lobby.ID}`);
 
 		for (const subLevelUnsubscribe of unsubscribeCallbacks) {
 			subLevelUnsubscribe();

@@ -6,7 +6,7 @@ import type { LogClass } from "@rbxts/rbxts-sleitnick-log";
 import { CollectionService, ContextActionService, Players } from "@rbxts/services";
 import { Events } from "client/network";
 import { clientProducer } from "client/store";
-import { GetLocalPlayerLobby } from "shared/store/lobbies/lobbies-selector";
+import { GetLobbiesAndHosts, GetLocalPlayerLobby } from "shared/store/lobbies/lobbies-selector";
 
 @Controller({})
 export class LobbyController implements OnInit, OnStart {
@@ -49,11 +49,11 @@ export class LobbyController implements OnInit, OnStart {
 	private listenForLobbies() {}
 
 	private proximityPrompts() {
-		clientProducer.subscribe((state) => {
+		clientProducer.subscribe(GetLobbiesAndHosts, (lobbies) => {
 			// Check for hosts that have left or lobbies that are destroyed
 			for (const [LobbyID, Connection] of Object.entries(this.hostConnections)) {
 				let lobbyStillExists = false;
-				for (const [_, Lobby] of Object.entries(state.lobbies.Hosts)) {
+				for (const [_, Lobby] of Object.entries(lobbies.hosts)) {
 					if (LobbyID === tostring(Lobby.UserId)) {
 						lobbyStillExists = true;
 						break;
@@ -75,7 +75,7 @@ export class LobbyController implements OnInit, OnStart {
 			}
 
 			// Add new hosts that don't have a monitor signal
-			for (const [LobbyID, Host] of Object.entries(state.lobbies.Hosts)) {
+			for (const [LobbyID, Host] of Object.entries(lobbies.hosts)) {
 				const HostPlayerID = tostring(Host.UserId);
 				if (!this.hostConnections[HostPlayerID]) {
 					// this.log.Info(`Adding new host connection for ${HostPlayerID}`);
@@ -117,8 +117,16 @@ export class LobbyController implements OnInit, OnStart {
 
 		this.hostPrompts[LobbyID] = ProximityPrompt; // Store the ProximityPrompt reference
 
-		ProximityPrompt.Triggered.Connect(() => {
+		let Connection: RBXScriptConnection | undefined = undefined;
+
+		Connection = ProximityPrompt.Triggered.Connect(() => {
 			Events.JoinLobby.fire(LobbyID);
+		});
+
+		ProximityPrompt.Destroying.Once(() => {
+			if (Connection) {
+				Connection.Disconnect();
+			}
 		});
 	}
 

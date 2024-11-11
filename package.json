@@ -79,6 +79,7 @@
 		"@rbxts/luau-polyfill": "^1.1.2",
 		"@rbxts/make": "^1.0.6",
 		"@rbxts/pretty-react-hooks": "^0.6.0",
+		"@rbxts/profileservice": "^1.4.2",
 		"@rbxts/rbx-debug": "^1.0.2-ts.0",
 		"@rbxts/rbxts-sleitnick-log": "^1.1.7",
 		"@rbxts/react": "^0.4.0",
