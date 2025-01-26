@@ -1,7 +1,7 @@
 //!optimize 2
 
 import { Object } from "@rbxts/luau-polyfill";
-import React, { useEffect } from "@rbxts/react";
+import React from "@rbxts/react";
 import { Players } from "@rbxts/services";
 import { useRootSelector } from "client/app/hooks";
 import { getQuirkymals, getSkins } from "client/modules/shop-utilities";
@@ -12,9 +12,6 @@ export default function ShopSlotsContainer({ children }: React.PropsWithChildren
 
 	const playerData = useRootSelector(selectPlayerInventory(tostring(Players.LocalPlayer.UserId)));
 
-	useEffect(() => {
-		print(playerData);
-	}, [playerData]);
 	return (
 		<frame
 			BackgroundTransparency={1}

@@ -8,6 +8,10 @@ export const getCurrentTab = (state: RootState) => {
 	return state.interface.Tab;
 };
 
-export const getItemPreview = (state: RootState) => {
-	return state.interface.ItemPreview;
+export const getShopItemPreview = (state: RootState) => {
+	return state.interface.ShopItemPreview;
+};
+
+export const getInventoryItemPreview = (state: RootState) => {
+	return state.interface.InventoryItemPreview;
 };

@@ -8,6 +8,7 @@ import { getQuirkymals, getSkins } from "client/modules/inventory-utilities";
 import { getCurrentTab } from "client/store/slices/Interface";
 import { QuirkymalTuning } from "shared/modules/tuning/quirkymals-tuning";
 import { selectPlayerInventory } from "shared/store/players/players-selector";
+import { PlayerQuirkymals, PlayerSkins } from "shared/store/players/players-slice/types";
 
 export default function InventorySlotsContainer({ children }: React.PropsWithChildren): React.Element {
 	const currentTab = useRootSelector(getCurrentTab);
@@ -17,8 +18,14 @@ export default function InventorySlotsContainer({ children }: React.PropsWithChi
 	const [filteredSkins, setFilteredSkins] = useState<string[]>([]);
 
 	useEffect(() => {
-		setFilteredQuirkymals(Object.keys(QuirkymalTuning).filter((quirkymal) => !playerData?.quirkymals[quirkymal]));
-		setFilteredSkins(Object.keys(QuirkymalTuning).filter((quirkymal) => !playerData?.skins[quirkymal]));
+		setFilteredQuirkymals(
+			Object.keys(QuirkymalTuning).filter(
+				(quirkymal) => !playerData?.quirkymals[quirkymal as keyof PlayerQuirkymals],
+			),
+		);
+		setFilteredSkins(
+			Object.keys(QuirkymalTuning).filter((quirkymal) => !playerData?.skins[quirkymal as keyof PlayerSkins]),
+		);
 	}, [playerData]);
 
 	useEffect(() => {

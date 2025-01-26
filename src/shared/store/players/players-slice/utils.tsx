@@ -11,6 +11,9 @@ export const defaultPlayerData: PlayerData = {
 		Coins: 0,
 		Gems: 0,
 	},
+	checkpoints: {
+		Mountains: true,
+	},
 	height: 1,
 	quirkymal: "Dove",
 	quirkymals: {

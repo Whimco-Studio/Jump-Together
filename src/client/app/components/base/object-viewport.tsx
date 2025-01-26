@@ -86,7 +86,7 @@ export default function ObjectViewport({
 			});
 		}
 
-		print(model);
+		// print(model);
 		model.Parent = viewport;
 
 		const viewportCamera = new Instance("Camera");

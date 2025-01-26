@@ -1,27 +1,28 @@
 import { createProducer } from "@rbxts/reflex";
 
 interface State {
-	ItemPreview: Model | undefined;
+	InventoryItemPreview: Model | undefined;
 	Page: string;
+	ShopItemPreview: Model | undefined;
 	Tab: string;
 }
 
 const initialState: State = {
-	ItemPreview: undefined,
+	InventoryItemPreview: undefined,
 	Page: "Home",
+	ShopItemPreview: undefined,
 	Tab: "Quirkymals",
 };
 
 export const interfaceSlice = createProducer(initialState, {
-	setItemPreview: (state, itemPreview: Model | undefined) => {
-		// if (state.ItemPreview) {
-		// 	state.ItemPreview.Destroy();
-		// }
-
-		return { ...state, ItemPreview: itemPreview };
+	setInventoryItemPreview: (state, itemPreview: Model | undefined) => {
+		return { ...state, InventoryItemPreview: itemPreview };
 	},
 	setPage: (state, page: string) => {
 		return { ...state, Page: page };
+	},
+	setShopItemPreview: (state, itemPreview: Model | undefined) => {
+		return { ...state, ShopItemPreview: itemPreview };
 	},
 	setTab: (state, tab: string) => {
 		return { ...state, Tab: tab };

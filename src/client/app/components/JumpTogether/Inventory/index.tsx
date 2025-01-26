@@ -4,12 +4,17 @@ import { CloseButton } from "../../close-button";
 import InventorySlotsContainer from "./InventorySlotsContainer";
 import ItemPreview from "./ItemPreview";
 import InventoryTabs from "./Tabs";
+import { useUnmountEffect } from "@rbxts/pretty-react-hooks";
 import React from "@rbxts/react";
 import { useRootProducer } from "client/app/hooks";
 import { Images } from "client/app/images";
 
 export default function Inventory({ children }: React.PropsWithChildren): React.Element {
 	const producer = useRootProducer();
+
+	useUnmountEffect(() => {
+		producer.setInventoryItemPreview(undefined);
+	});
 
 	return (
 		<frame

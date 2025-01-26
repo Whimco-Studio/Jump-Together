@@ -4,37 +4,35 @@ import { useUnmountEffect } from "@rbxts/pretty-react-hooks";
 import React, { useEffect } from "@rbxts/react";
 import { RunService } from "@rbxts/services";
 import ObjectViewport from "client/app/components/base/object-viewport";
-import { useRootSelector } from "client/app/hooks";
+import { useRootProducer, useRootSelector } from "client/app/hooks";
 import { Images } from "client/app/images";
 import { FredokaOne } from "client/app/modules/fonts";
 import { Events } from "client/network";
-import { getItemPreview } from "client/store/slices/Interface";
+import { getInventoryItemPreview } from "client/store/slices/Interface";
 import { getShopFunFact, getShopItemName, getShopRarity } from "client/store/slices/shop";
 import { QuirkymalTuning } from "shared/modules/tuning/quirkymals-tuning";
 
 export default function ItemPreview({ children }: React.PropsWithChildren): React.Element {
-	const itemPreview = useRootSelector(getItemPreview) as QuirkymalAppearance | undefined;
+	const inventoryItemPreview = useRootSelector(getInventoryItemPreview) as QuirkymalAppearance | undefined;
 	const rarity = useRootSelector(getShopRarity);
 	const name = useRootSelector(getShopItemName);
 	const funFact = useRootSelector(getShopFunFact);
 
+	const producer = useRootProducer();
+
 	useEffect(() => {
-		if (!itemPreview) {
+		if (!inventoryItemPreview) {
 			RunService.UnbindFromRenderStep("ItemPreview");
 			return;
 		}
 
 		RunService.BindToRenderStep("ItemPreview", 0, () => {
-			if (!itemPreview.FindFirstChild("HumanoidRootPart")) {
+			if (!inventoryItemPreview.FindFirstChild("HumanoidRootPart")) {
 				RunService.UnbindFromRenderStep("ItemPreview");
 				return;
 			}
-
-			// itemPreview.HumanoidRootPart.Orientation = itemPreview.HumanoidRootPart.Orientation.add(
-			// 	new Vector3(0, 0.01, 0),
-			// );
 		});
-	}, [itemPreview]);
+	}, [inventoryItemPreview]);
 
 	useUnmountEffect(() => {
 		RunService.UnbindFromRenderStep("ItemPreview");
@@ -50,7 +48,7 @@ export default function ItemPreview({ children }: React.PropsWithChildren): Reac
 			Size={new UDim2(0.294, 0, 0.618, 0)}
 			key="ItemPreview"
 		>
-			{(itemPreview && (
+			{(inventoryItemPreview && (
 				<ObjectViewport
 					Native={{
 						AnchorPoint: new Vector2(0.5, 0.5),
@@ -58,7 +56,7 @@ export default function ItemPreview({ children }: React.PropsWithChildren): Reac
 						Position: UDim2.fromScale(0.5, 0.3),
 						Size: UDim2.fromScale(1, 0.4),
 					}}
-					Object={itemPreview}
+					Object={inventoryItemPreview}
 					PivotOffset={CFrame.fromEulerAnglesXYZ(0, math.pi / 1.25, 0).mul(
 						CFrame.fromEulerAnglesXYZ(math.pi / 6.5, 0, 0),
 					)}

@@ -3,10 +3,11 @@
 import { useUnmountEffect } from "@rbxts/pretty-react-hooks";
 import React from "@rbxts/react";
 import ObjectViewport from "client/app/components/base/object-viewport";
-import { useRootProducer } from "client/app/hooks";
+import { useRootProducer, useRootSelector } from "client/app/hooks";
 import { Images } from "client/app/images";
 import UIStroke from "client/app/modules/scale-ui-stroke";
 import { Theme } from "client/app/theme";
+import { getInventoryItemPreview } from "client/store/slices/Interface";
 
 export interface ItemSlotProperties extends React.PropsWithChildren {
 	AssetPreview: Instance;
@@ -20,6 +21,7 @@ export interface ItemSlotProperties extends React.PropsWithChildren {
 
 export default function InventoryItemSlot(properties: ItemSlotProperties): React.Element {
 	const producer = useRootProducer();
+	const inventoryItemPreview = useRootSelector(getInventoryItemPreview) as QuirkymalAppearance | undefined;
 
 	useUnmountEffect(() => {
 		// properties.AssetPreview.Destroy();
@@ -36,7 +38,8 @@ export default function InventoryItemSlot(properties: ItemSlotProperties): React
 			BorderSizePixel={0}
 			Event={{
 				MouseButton1Click: () => {
-					producer.setItemPreview(undefined);
+					producer.setInventoryItemPreview(undefined);
+					inventoryItemPreview?.Destroy();
 					producer.setShopRarity(properties.Rarity);
 					producer.setShopFunFact(properties.FunFact);
 					producer.setShopItemPrice(properties.AssetPrice);
@@ -44,7 +47,7 @@ export default function InventoryItemSlot(properties: ItemSlotProperties): React
 
 					task.defer(() => {
 						task.wait(0.01);
-						producer.setItemPreview(properties.AssetPreview.Clone() as Model);
+						producer.setInventoryItemPreview(properties.AssetPreview.Clone() as Model);
 					});
 
 					properties.OnClick();

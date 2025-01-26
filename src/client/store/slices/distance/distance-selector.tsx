@@ -7,3 +7,7 @@ export const getDistance = (state: RootState) => {
 export const getCoinsPerMin = (state: RootState) => {
 	return state.distance.CoinsPerMin;
 };
+
+export const getLastMaxDistance = (state: RootState) => {
+	return state.distance.LastMaxDistance;
+};

@@ -23,6 +23,8 @@ interface ClientToServerEvents {
 
 	Respawn: (from: string) => undefined;
 	ServerLogLobbies: () => undefined;
+	TeleportToCheckpoint: (Checkpoint: string) => undefined;
+
 	UpdateLobby: () => undefined;
 	// Reflex
 	store: {

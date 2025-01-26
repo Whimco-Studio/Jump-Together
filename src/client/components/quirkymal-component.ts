@@ -87,7 +87,7 @@ export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> imp
 		textLabel.Name = "TextLabel";
 		textLabel.FontFace = new Font("rbxasset://fonts/families/FredokaOne.json");
 		textLabel.Text = this.instance.Name as string;
-		textLabel.TextColor3 = Color3.fromRGB(0, 0, 0);
+		textLabel.TextColor3 = Color3.fromRGB(255, 255, 255);
 		textLabel.TextScaled = true;
 		textLabel.TextSize = 14;
 		textLabel.TextWrapped = true;
@@ -101,7 +101,7 @@ export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> imp
 
 		const uIStroke = new Instance("UIStroke");
 		uIStroke.Name = "UIStroke";
-		uIStroke.Color = Color3.fromRGB(255, 255, 255);
+		uIStroke.Color = Color3.fromRGB(48, 48, 48);
 		uIStroke.LineJoinMode = Enum.LineJoinMode.Miter;
 		uIStroke.Thickness = 5;
 		uIStroke.Parent = textLabel;

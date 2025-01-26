@@ -65,3 +65,9 @@ export const selectPlayerHeight = (playerId: string) => {
 		return state.players.stats[playerId];
 	};
 };
+
+export const selectPlayerCheckpoints = (playerId: string) => {
+	return createSelector(selectPlayerData(playerId), (data) => {
+		return data.checkpoints;
+	});
+};

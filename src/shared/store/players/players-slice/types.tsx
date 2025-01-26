@@ -4,6 +4,7 @@ import { Setting } from "shared/configs/settings";
 
 export interface PlayerData {
 	balance: PlayerBalance;
+	checkpoints: PlayerCheckpoints;
 	height: number;
 	quirkymal: Quirkymal;
 	quirkymals: PlayerQuirkymals;
@@ -18,3 +19,4 @@ export type PlayerSettings = Record<Setting, boolean>;
 // export type PlayerSkins = Set<Skin>;
 export type PlayerQuirkymals = Partial<Record<Quirkymal, true | undefined>>;
 export type PlayerSkins = Partial<Record<Skin, true | undefined>>;
+export type PlayerCheckpoints = Partial<Record<Checkpoint, true | undefined>>;

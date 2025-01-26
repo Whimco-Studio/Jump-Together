@@ -1408,7 +1408,7 @@ export const QuirkymalTuning = {
 		Name: "Octopus",
 		Type: "Quirkymal",
 	},
-	Orangutan: {
+	OrangUtan: {
 		Animation: "OrangUtanAnimation",
 		Conditions: [
 			{ RequiredAmount: 1600, Type: "Price" },
@@ -1416,7 +1416,7 @@ export const QuirkymalTuning = {
 		],
 		Effects: [{ Amount: 20, Mood: "Playful", Type: "MoodChange" }],
 		FunFact: "Orangutan loves to swing through the trees and always lands on its feet.",
-		Name: "Orangutan",
+		Name: "OrangUtan",
 		Type: "Quirkymal",
 	},
 	Orca: {
