@@ -2,21 +2,10 @@ export const Theme = {
 	Colors: {
 		Primary: Color3.fromHex("#4a8de5"),
 		RarityStrokes: {
-			Common: {
-				TextColor: Color3.fromHex("282828"),
-			},
-			Quirky: {
-				TextColor: Color3.fromHex("692031"),
-			},
-			Rare: {
-				TextColor: Color3.fromHex("202a69"),
-			},
-			Sepcial: {
-				TextColor: Color3.fromHex("2d0080"),
-			},
-			Uncommon: {
-				TextColor: Color3.fromHex("013d00"),
-			},
+			Common: Color3.fromHex("#59a24c"),
+			Legendary: Color3.fromHex("#d0b34a"),
+			Rare: Color3.fromHex("#c33ac5"),
+			Uncommon: Color3.fromHex("#25aab5"),
 		},
 
 		// Primary: Color3.fromRGB(52, 97, 154),
