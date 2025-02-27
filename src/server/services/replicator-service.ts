@@ -14,7 +14,9 @@ export class ReplicatorService implements OnInit, OnStart {
 	public onStart() {
 		Events.ButtonPressed.connect((Player: Player, Button: BasePart, PressedAt: number) => {
 			const CooldownTime = Button.GetAttribute("CooldownTime") as number | undefined;
-			const ObjectValue = Button.FindFirstChildOfClass("ObjectValue") as ObjectValue | undefined;
+			const ObjectValue = {
+				Value: ServerStorage.ButtonPathways.FindFirstChild(Button.Name),
+			};
 
 			if (!ObjectValue) {
 				this.log.Warning(`No ObjectValue found in ${Button}`);
@@ -33,9 +35,11 @@ export class ReplicatorService implements OnInit, OnStart {
 			const Value = ObjectValue.Value;
 			Value.Parent = Workspace;
 
+			const ElapsedGameTime = Workspace.DistributedGameTime - PressedAt;
 			// Task Delay for CooldownTime including PressedAt
 			task.defer(() => {
-				task.wait(CooldownTime - (tick() - PressedAt));
+				print(CooldownTime - ElapsedGameTime);
+				task.wait(CooldownTime - ElapsedGameTime);
 				Value.Parent = ServerStorage.ButtonPathways;
 			});
 		});

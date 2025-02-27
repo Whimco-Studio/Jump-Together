@@ -15,7 +15,9 @@ export class CheckpointService implements OnInit, OnStart {
 		Events.TeleportToCheckpoint.connect((player, checkpoint) => {
 			const Character = player.Character;
 			const checkpoints = this.getCheckpoints();
-			const target = checkpoints.find((c) => c.Parent?.Name === checkpoint) as BasePart | undefined;
+			const target = checkpoints.find(
+				(c) => c.Parent?.Name === checkpoint || c.GetAttribute("Biome") === checkpoint,
+			) as BasePart | undefined;
 
 			if (!target || !Character) return;
 

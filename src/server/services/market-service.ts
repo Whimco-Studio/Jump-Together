@@ -37,7 +37,10 @@ export class MarketService implements OnInit, OnStart {
 	private processQuirkymalPurchase(player: Player, quirkymal: string) {
 		const item = QuirkymalTuning[quirkymal as keyof typeof QuirkymalTuning];
 		const playerData = this.playerDataService.getProfile(player);
-		if (!playerData) return;
+		if (!playerData || !item) {
+			print(quirkymal);
+			return;
+		}
 
 		const balance = playerData.Data.balance;
 		if (balance.Coins < item.Conditions[0]!.RequiredAmount!) {

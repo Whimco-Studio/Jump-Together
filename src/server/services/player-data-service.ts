@@ -11,7 +11,7 @@ import { defaultPlayerData } from "shared/store/players/players-slice/utils";
 import { forEveryPlayer } from "shared/utils/for-every-player";
 
 let DataStoreName = "Production";
-const KEY_TEMPLATE = "%d_Data.Version.1";
+const KEY_TEMPLATE = "%d_Data.Version.05";
 
 if (RunService.IsStudio()) DataStoreName = "Testing";
 
@@ -42,7 +42,11 @@ export class PlayerDataService implements OnInit {
 
 		profile.ListenToRelease(() => {
 			this.profiles.delete(player);
-			serverProducer.closePlayerData(tostring(player.UserId));
+			serverProducer.closeBalancePlayerData(tostring(player.UserId));
+			serverProducer.closeEquippedPlayerData(tostring(player.UserId));
+			serverProducer.closeSettingsPlayerData(tostring(player.UserId));
+			serverProducer.closeInventoryPlayerData(tostring(player.UserId));
+			serverProducer.closeCheckpointsPlayerData(tostring(player.UserId));
 			player.Kick();
 		});
 
@@ -50,7 +54,11 @@ export class PlayerDataService implements OnInit {
 		profile.Reconcile();
 
 		this.profiles.set(player, profile);
-		serverProducer.loadPlayerData(tostring(player.UserId), profile.Data);
+		serverProducer.loadBalancePlayerData(tostring(player.UserId), profile.Data);
+		serverProducer.loadEquippedPlayerData(tostring(player.UserId), profile.Data);
+		serverProducer.loadSettingsPlayerData(tostring(player.UserId), profile.Data);
+		serverProducer.loadInventoryPlayerData(tostring(player.UserId), profile.Data);
+		serverProducer.loadCheckpointsPlayerData(tostring(player.UserId), profile.Data);
 		this.createLeaderstats(player);
 
 		const unsubscribe = serverProducer.subscribe(selectPlayerData(tostring(player.UserId)), (save) => {
@@ -60,6 +68,8 @@ export class PlayerDataService implements OnInit {
 			// biome-ignore lint/suspicious/noSelfCompare: <explanation>
 			if (player === player) unsubscribe();
 		});
+
+		// print(serverProducer.getState());
 	}
 
 	private createLeaderstats(player: Player) {

@@ -4,8 +4,15 @@ import { Profile } from "@rbxts/profileservice/globals";
 import { Players, ReplicatedStorage, ServerStorage, Workspace } from "@rbxts/services";
 import { Events } from "server/network";
 import { serverProducer } from "server/store";
+import { Quirkymal } from "shared/configs/quirkymals";
 import { GetLocalPlayerLobby } from "shared/store/lobbies/lobbies-selector";
 import { PlayerData } from "shared/store/players/players-slice/types";
+
+const Biome = {
+	"Dark Depths": true,
+	"Deadly Desert": true,
+	"Jumpin' Jungle": true,
+};
 
 @Service({})
 export class QuirkymalService implements OnStart, OnInit {
@@ -55,21 +62,48 @@ export class QuirkymalService implements OnStart, OnInit {
 
 		Events.CheckpointReached.connect((player: Player, checkpoint: BasePart) => {
 			this.SaveSpawns[player.UserId] = checkpoint;
+
+			const biome = checkpoint.GetAttribute("Biome") as Checkpoint | undefined;
+
+			if (biome && Biome[biome as keyof typeof Biome]) {
+				player.SetAttribute("Biome", biome);
+
+				serverProducer.unlockCheckpoint(tostring(player.UserId), biome);
+
+				print("Unlocked Biome", serverProducer.getState().players.checkpoints[tostring(player.UserId)]);
+				print(this.playerDataService.getProfile(player));
+			}
 		});
 
 		Events.EquipQuirkymal.connect((player: Player, quirkymalName) => {
+			player.SetAttribute("Quirkymal", quirkymalName);
 			print(quirkymalName);
-			player.SetAttribute("Quirkymal", quirkymalName as unknown as string);
+			serverProducer.equipQuirkymal(tostring(player.UserId), quirkymalName);
+		});
+
+		Events.EquipSkin.connect((player: Player, quirkymalName) => {
+			player.SetAttribute("Skin", quirkymalName);
+			player.Character?.SetAttribute("Skin", quirkymalName);
+			serverProducer.equipSkin(tostring(player.UserId), quirkymalName);
 		});
 	}
 
 	private registerAttributes(player: Player, playerData: PlayerData) {
-		player.SetAttribute("Quirkymal", playerData.quirkymal);
+		print(playerData.equipped, playerData.equipped.quirkymal, playerData.equipped.skin);
+		player.SetAttribute("Quirkymal", playerData.equipped.quirkymal);
+		player.SetAttribute("Skin", playerData.equipped.skin);
 	}
 
 	private playerAttributeEvents(player: Player) {
-		player.GetAttributeChangedSignal("Quirkymal").Connect((value: unknown) => {
+		player.GetAttributeChangedSignal("Quirkymal").Connect((value: string) => {
+			player.SetAttribute("Skin", value);
 			this.addCharacter(player);
+		});
+
+		player.GetAttributeChangedSignal("Skin").Connect((value: string) => {
+			if (player.Character) {
+				player.Character.SetAttribute("Skin", value);
+			}
 		});
 
 		this.chatCommand(player);
@@ -91,6 +125,7 @@ export class QuirkymalService implements OnStart, OnInit {
 		if (StarterCharacterRig) {
 			StarterCharacterRig.HumanoidRootPart.Transparency = 0.5;
 			StarterCharacterRig.SetAttribute("Quirkymal", playerQuirkymal === undefined ? "Dove" : playerQuirkymal);
+			StarterCharacterRig.SetAttribute("Skin", player.GetAttribute("Skin") as Quirkymal);
 			StarterCharacterRig.SetAttribute("HeadWear", "None");
 			StarterCharacterRig.Name = player.DisplayName;
 		}
