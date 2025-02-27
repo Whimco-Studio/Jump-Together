@@ -15,3 +15,7 @@ export const getShopItemPreview = (state: RootState) => {
 export const getInventoryItemPreview = (state: RootState) => {
 	return state.interface.InventoryItemPreview;
 };
+
+export const getIsMobile = (state: RootState) => {
+	return state.interface.IsMobile;
+};
