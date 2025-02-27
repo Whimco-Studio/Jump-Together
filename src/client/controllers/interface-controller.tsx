@@ -6,29 +6,40 @@ import React from "@rbxts/react";
 import { StrictMode } from "@rbxts/react";
 import { ReflexProvider } from "@rbxts/react-reflex";
 import { createPortal, createRoot } from "@rbxts/react-roblox";
-import { Players, RunService, StarterGui } from "@rbxts/services";
+import { Players, RunService, StarterGui, UserInputService } from "@rbxts/services";
+import { Icon } from "@rbxts/topbar-plus";
 import { App } from "client/app";
-import { useStore } from "client/app/hooks/use-store";
-import { CameraShots } from "client/enums/cameraShots";
 import { Events } from "client/network";
 import { clientProducer } from "client/store";
-import { getCurrentPage } from "client/store/slices/Interface";
 
 @Controller({})
 export class InterfaceController implements OnInit, OnStart {
+	private Icons: { [key: string]: Icon } = {};
 	public constructor(private readonly log: LogClass) {}
 
 	public onInit() {}
 
 	public onStart() {
-		this.mountGui();
-		this.handleReset();
-		this.listenToPageChange();
+		// this.mountGui();
+		// this.handleReset();
+		// this.checkDeviceType();
+		// this.listenToDeviceChanges();
 	}
 
-	private listenToPageChange() {
-		clientProducer.subscribe(getCurrentPage, (Page) => {
-			useStore().setCameraShot(CameraShots[Page as keyof typeof CameraShots] || CameraShots.Default);
+	private listenToDeviceChanges() {
+		UserInputService.GetPropertyChangedSignal("KeyboardEnabled").Connect(() => {
+			this.checkDeviceType();
+			print("KeyboardEnabled");
+		});
+
+		UserInputService.GetPropertyChangedSignal("TouchEnabled").Connect(() => {
+			this.checkDeviceType();
+			print("TouchEnabled");
+		});
+
+		UserInputService.GetPropertyChangedSignal("MouseEnabled").Connect(() => {
+			this.checkDeviceType();
+			print("MouseEnabled");
 		});
 	}
 
@@ -75,5 +86,17 @@ export class InterfaceController implements OnInit, OnStart {
 		};
 
 		coreCall();
+	}
+
+	private checkDeviceType() {
+		if (UserInputService.TouchEnabled && !UserInputService.KeyboardEnabled && !UserInputService.MouseEnabled) {
+			clientProducer.setIsMobile(true);
+		} else if (
+			!UserInputService.TouchEnabled &&
+			UserInputService.KeyboardEnabled &&
+			UserInputService.MouseEnabled
+		) {
+			clientProducer.setIsMobile(false);
+		}
 	}
 }
