@@ -3,7 +3,12 @@
 import { BaseComponent, Component } from "@flamework/components";
 import { OnStart } from "@flamework/core";
 import type { LogClass } from "@rbxts/rbxts-sleitnick-log";
-import { Players } from "@rbxts/services";
+import { Players, Workspace } from "@rbxts/services";
+
+const raycastParameters = new RaycastParams();
+raycastParameters.FilterType = Enum.RaycastFilterType.Exclude;
+raycastParameters.RespectCanCollide = false;
+raycastParameters.FilterType = Enum.RaycastFilterType.Exclude;
 
 interface Attributes {}
 
@@ -30,7 +35,8 @@ export class PhysicsPlatformstand extends BaseComponent<Attributes, Humanoid> im
 			this.instance.SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, false);
 			Connection = this.instance.GetPropertyChangedSignal("PlatformStand").Connect(() => {
 				this.CutForces();
-				this.ToggleRagdoll(AngularVelocity);
+				this.ToggleRagdoll(AttemptCharacter.HumanoidRootPart, AngularVelocity);
+				print("PlatformStand");
 			});
 
 			this.instance.Destroying.Once(() => {
@@ -77,7 +83,28 @@ export class PhysicsPlatformstand extends BaseComponent<Attributes, Humanoid> im
 		AntiGravity.Enabled = true;
 	}
 
-	private ToggleRagdoll(AngularVelocity: AngularVelocity) {
+	private YieldForDisablePlatformStand(
+		AngularVelocity: AngularVelocity,
+		PlatformElapse: number,
+		Humanoid: Humanoid,
+		RootPart: BasePart,
+	): unknown {
+		task.wait(this.RagDollDuration);
+		if (math.abs(tick() - PlatformElapse) > this.RagDollDuration) {
+			raycastParameters.AddToFilter(RootPart.Parent!.GetDescendants());
+
+			const rayDown = Workspace.Raycast(RootPart.Position, Vector3.yAxis.mul(-100), raycastParameters);
+			if (!rayDown || (rayDown && !rayDown.Instance.HasTag("Obstacles_DeathZone"))) {
+				AngularVelocity.Enabled = false;
+				Humanoid.ChangeState(Enum.HumanoidStateType.Jumping);
+				return;
+			}
+			return this.YieldForDisablePlatformStand(AngularVelocity, PlatformElapse, Humanoid, RootPart);
+		}
+		return;
+	}
+
+	private ToggleRagdoll(RootPart: BasePart, AngularVelocity: AngularVelocity) {
 		const Humanoid = this.instance;
 		if (!Humanoid.PlatformStand) {
 			// Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
@@ -90,11 +117,7 @@ export class PhysicsPlatformstand extends BaseComponent<Attributes, Humanoid> im
 		Humanoid.ChangeState(Enum.HumanoidStateType.Physics);
 
 		task.defer(() => {
-			task.wait(this.RagDollDuration);
-			if (math.abs(tick() - PlatformElapse) > this.RagDollDuration) {
-				AngularVelocity.Enabled = false;
-				Humanoid.ChangeState(Enum.HumanoidStateType.Jumping);
-			}
+			this.YieldForDisablePlatformStand(AngularVelocity, PlatformElapse, Humanoid, RootPart);
 		});
 	}
 }
