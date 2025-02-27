@@ -1,1 +1,1 @@
-type Checkpoint = "Jungle" | "Mountains" | "Tundra";
+type Checkpoint = "Dark Depths" | "Deadly Desert" | "Default" | "Jumpin' Jungle";

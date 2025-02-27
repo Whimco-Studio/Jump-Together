@@ -1,20 +1,15 @@
-import { PlayerData } from "./types";
+import { PlayerData, PlayerEquipped } from "./types";
 import { createProducer } from "@rbxts/reflex";
 import { Quirkymal, Skin } from "shared/configs/quirkymals";
 
 export interface EquippedState {
-	readonly [player: string]:
-		| {
-				quirkymal: Quirkymal;
-				skin: Skin;
-		  }
-		| undefined;
+	readonly [player: string]: PlayerEquipped | undefined;
 }
 
 const initialState: EquippedState = {};
 
 export const equippedSlice = createProducer(initialState, {
-	closePlayerData: (state, playerId: string) => ({
+	closeEquippedPlayerData: (state, playerId: string) => ({
 		...state,
 		[playerId]: undefined,
 	}),
@@ -22,9 +17,9 @@ export const equippedSlice = createProducer(initialState, {
 	equipQuirkymal: (state, playerId: string, quirkymal: Quirkymal) => ({
 		...state,
 		[playerId]: {
-			...state[playerId],
-			quirkymal: quirkymal, // Correctly assign quirkymal
-			skin: quirkymal, // Correctly assign skin
+			...state[playerId], // Preserve existing data
+			quirkymal: quirkymal,
+			skin: quirkymal,
 		},
 	}),
 
@@ -32,16 +27,13 @@ export const equippedSlice = createProducer(initialState, {
 		...state,
 		[playerId]: {
 			...state[playerId],
-			quirkymal: state[playerId]?.quirkymal || "Dove", // Correctly assign quirkymal
-			skin: skin, // Correctly assign skin
+			quirkymal: state[playerId]?.quirkymal || "Dove",
+			skin: skin,
 		},
 	}),
 
 	loadEquippedPlayerData: (state, playerId: string, data: PlayerData) => ({
 		...state,
-		[playerId]: {
-			quirkymal: data.quirkymal, // Correctly assign quirkymals
-			skin: data.skin, // Correctly assign skins
-		},
+		[playerId]: data.equipped,
 	}),
 });

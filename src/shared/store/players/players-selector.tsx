@@ -41,19 +41,46 @@ export const selectPlayersInventory = () => {
 	};
 };
 
+export const selectPlayersEquipped = () => {
+	return (state: SharedState) => {
+		return state.players.equipped;
+	};
+};
+
+export const selectPlayerEquipped = (playerId: string) => {
+	return (state: SharedState) => {
+		return state.players.equipped[playerId];
+	};
+};
+
+export const selectPlayerCheckpoints = (playerId: string) => {
+	return (state: SharedState) => {
+		return state.players.checkpoints[playerId];
+	};
+};
+
+export const selectPlayerDailyRewards = (playerId: string) => {
+	return (state: SharedState) => {
+		return state.players.dailyRewards[playerId];
+	};
+};
+
 export const selectPlayerData = (playerId: string) => {
-	print("selectPlayerData");
 	return createSelector(
 		selectPlayerBalances(playerId),
 		selectPlayerSettings(playerId),
 		selectPlayerInventory(playerId),
-		(balances, settings, inventory) => {
+		selectPlayerEquipped(playerId),
+		selectPlayerCheckpoints(playerId),
+		selectPlayerDailyRewards(playerId),
+		(balances, settings, inventory, equipped, checkpoints, dailyRewards) => {
 			return {
 				balance: balances || defaultPlayerData.balance,
-				quirkymal: inventory?.quirkymal || defaultPlayerData.quirkymal,
+				checkpoints: checkpoints || defaultPlayerData.checkpoints,
+				dailyRewards: dailyRewards || defaultPlayerData.dailyRewards,
+				equipped: equipped || defaultPlayerData.equipped,
 				quirkymals: inventory?.quirkymals || defaultPlayerData.quirkymals,
 				settings: settings || defaultPlayerData.settings,
-				skin: inventory?.skin || defaultPlayerData.skin,
 				skins: inventory?.skins || defaultPlayerData.skins,
 			} as PlayerData;
 		},
@@ -64,10 +91,4 @@ export const selectPlayerHeight = (playerId: string) => {
 	return (state: SharedState) => {
 		return state.players.stats[playerId];
 	};
-};
-
-export const selectPlayerCheckpoints = (playerId: string) => {
-	return createSelector(selectPlayerData(playerId), (data) => {
-		return data.checkpoints;
-	});
 };

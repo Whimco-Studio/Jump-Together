@@ -8,12 +8,12 @@ export interface SettingsState {
 const initialState: SettingsState = {};
 
 export const settingsSlice = createProducer(initialState, {
-	closePlayerData: (state, player: string) => ({
+	closeSettingsPlayerData: (state, player: string) => ({
 		...state,
 		[player]: undefined,
 	}),
 
-	loadPlayerData: (state, player: string, data: PlayerData) => ({
+	loadSettingsPlayerData: (state, player: string, data: PlayerData) => ({
 		...state,
 		[player]: data.settings,
 	}),

@@ -1,14 +1,11 @@
-import { PlayerCheckpoints, PlayerData, PlayerQuirkymals, PlayerSkins } from "./types";
+import { PlayerData, PlayerQuirkymals, PlayerSkins } from "./types";
 import { createProducer } from "@rbxts/reflex";
 import { Quirkymal, Skin } from "shared/configs/quirkymals";
 
 export interface InventoryState {
 	readonly [player: string]:
 		| {
-				checkpoints: PlayerCheckpoints;
-				quirkymal: Quirkymal;
 				quirkymals: PlayerQuirkymals;
-				skin: Skin;
 				skins: PlayerSkins;
 		  }
 		| undefined;
@@ -17,23 +14,18 @@ export interface InventoryState {
 const initialState: InventoryState = {};
 
 export const inventorySlice = createProducer(initialState, {
-	closePlayerData: (state, playerId: string) => {
+	closeInventoryPlayerData: (state, playerId: string) => {
 		return {
 			...state,
 			[playerId]: undefined,
 		};
 	},
 
-	loadPlayerData: (state, playerId: string, data: PlayerData) => {
-		print("Loading");
-
+	loadInventoryPlayerData: (state, playerId: string, data: PlayerData) => {
 		return {
 			...state,
 			[playerId]: {
-				checkpoints: data.checkpoints,
-				quirkymal: data.quirkymal,
 				quirkymals: data.quirkymals,
-				skin: data.skin,
 				skins: data.skins,
 			},
 		};

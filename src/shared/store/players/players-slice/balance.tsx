@@ -24,13 +24,15 @@ export const balanceSlice = createProducer(initialState, {
 		};
 	},
 
-	closePlayerData: (state, playerId: string) => ({
+	closeBalancePlayerData: (state, playerId: string) => ({
 		...state,
 		[playerId]: undefined,
 	}),
 
-	loadPlayerData: (state, playerId: string, data: PlayerData) => ({
-		...state,
-		[playerId]: data.balance,
-	}),
+	loadBalancePlayerData: (state, playerId: string, data: PlayerData) => {
+		return {
+			...state,
+			[playerId]: data.balance,
+		};
+	},
 });
