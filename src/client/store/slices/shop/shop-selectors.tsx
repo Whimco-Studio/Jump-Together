@@ -19,3 +19,7 @@ export const getShopItemName = (state: RootState) => {
 export const getShopFunFact = (state: RootState) => {
 	return state.shop.FunFact;
 };
+
+export const getShopDisplayItem = (state: RootState) => {
+	return state.shop.DisplayItem;
+};
