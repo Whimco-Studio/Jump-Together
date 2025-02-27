@@ -89,7 +89,7 @@ export class VisualsButton extends BaseComponent<Attributes, BasePart> implement
 
 			if (!this.Pressed) {
 				this.Pressed = true;
-				Events.ButtonPressed.fire(this.instance, tick());
+				Events.ButtonPressed.fire(this.instance, Workspace.DistributedGameTime);
 				// ToggleParticles(Button)
 			}
 		}
