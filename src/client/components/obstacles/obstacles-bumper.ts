@@ -73,17 +73,11 @@ export class ObstaclesBumper extends BaseComponent<Attributes, BasePart> impleme
 		task.defer(() => {
 			task.wait(0.25);
 			bodyVelocity.Destroy();
-			task.defer(() => {
-				task.wait(0.75);
-				Humanoid.PlatformStand = false;
-				Humanoid.Jump = true;
-
-				while (Humanoid.GetState() !== Enum.HumanoidStateType.Landed && Character) {
-					task.wait();
-				}
-
-				// AntiGravity.Enabled = true
-			});
+			// task.defer(() => {
+			// 	task.wait(0.75);
+			// 	Humanoid.PlatformStand = false;
+			// 	Humanoid.Jump = true;
+			// });
 		});
 	}
 }
