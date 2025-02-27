@@ -1,19 +1,24 @@
 //!optimize 2
 
 import { BaseComponent, Component } from "@flamework/components";
-import { OnStart } from "@flamework/core";
+import { Flamework, OnStart } from "@flamework/core";
 import type { LogClass } from "@rbxts/rbxts-sleitnick-log";
 import { Players, ReplicatedStorage, Workspace } from "@rbxts/services";
 import Quirkify from "shared/modules/Quirkify";
 
-interface Attributes {}
+const baseModelSize = ReplicatedStorage.Assets.Quirkymals.Dove.GetExtentsSize().Magnitude;
 
 function setCameraSubject(character: PlayerRig) {
 	const Camera = Workspace.CurrentCamera as Camera;
 	Camera.CameraSubject = character.HumanoidRootPart;
 }
+interface Attributes {
+	Quirkymal?: string;
+	Skin?: string;
+}
 
 @Component({
+	instanceGuard: Flamework.createGuard<PlayerRig>(),
 	tag: "Visuals_Quirkymal",
 })
 export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> implements OnStart {
@@ -43,26 +48,28 @@ export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> imp
 			setCameraSubject(this.instance);
 		}
 
-		this.listenToAccessories();
+		// this.addBillboardGui(Player, visualInformation.appearanceRig.HumanoidRootPart);
 
-		this.addBillboardGui(Player, visualInformation.appearanceRig.HumanoidRootPart);
-		this.addParticles(this.instance);
+		this.modifySkin(visualInformation.appearanceRig);
+		this.rootAttachment = visualInformation.playerAttachment;
+
+		this.onAttributeChanged("Skin", (newValue, oldValue) => {
+			print(newValue, oldValue, this.instance);
+			this.modifySkin(visualInformation.appearanceRig);
+		});
+
+		for (const accessory of ["Backwear", "Facewear", "Headwear"]) {
+			this.equipAccessory(
+				visualInformation.appearanceRig,
+				accessory as "Backwear" | "Facewear" | "Headwear",
+				this.attributes[accessory as keyof Attributes],
+			);
+		}
 	}
-
 	onRender(dt: number): void {
 		if (!this.rootAttachment) return;
 
 		// Quirkify.addRotations(this.rootAttachment, dt);
-	}
-
-	private addParticles(Character: Model) {
-		// if (!Players.GetPlayerFromCharacter(Character)) return;
-		// const ParticleObject = Particles.create(
-		// 	Character,
-		// 	Character.WaitForChild("Humanoid", 5) as Humanoid,
-		// 	ReplicatedStorage.Assets.Cloud,
-		// );
-		// Particles.Toggle(ParticleObject, true);
 	}
 
 	private addBillboardGui(Player: Player | undefined, CosmeticRig: BasePart) {
@@ -120,36 +127,54 @@ export class QuirkymalComponent extends BaseComponent<Attributes, PlayerRig> imp
 		billboardGui.Parent = CosmeticRig;
 	}
 
-	private mountAccessories() {
-		const HeadWear = this.instance.FindFirstChild("HeadWear", true) as Bone;
-		if (!HeadWear) return;
+	private modifySkin(appearanceRig: QuirkymalAppearance) {
+		if (this.attributes.Skin === undefined) return;
 
-		const HeadWearName = this.instance.GetAttribute("HeadWear") as string | undefined;
-		let HeadWearItem = ReplicatedStorage.Assets.Accessories.Headwear.FindFirstChild(
-			HeadWearName === undefined ? "None" : HeadWearName,
-		) as HeadWearItem;
-		if (!HeadWearItem) return;
-
-		const PreviewHeadWearItem = this.instance.FindFirstChild("HeadWearItem") as MeshPart;
-		if (PreviewHeadWearItem) PreviewHeadWearItem.Destroy();
-		HeadWearItem = HeadWearItem.Clone();
-
-		HeadWearItem.Anchored = false;
-		HeadWearItem.Name = "HeadWearItem";
-		// HeadWearItem.Attachment.CFrame = new CFrame();
-
-		const RigidConstraint = new Instance("RigidConstraint");
-		RigidConstraint.Name = "HeadWearConstraint";
-		RigidConstraint.Attachment0 = HeadWear;
-		RigidConstraint.Attachment1 = HeadWearItem.Attachment;
-		RigidConstraint.Parent = HeadWearItem;
-
-		HeadWearItem.Parent = this.instance;
+		appearanceRig.HumanoidRootPart.TextureID = (
+			ReplicatedStorage.Assets.Quirkymals.FindFirstChild(this.attributes.Skin) as QuirkymalAppearance
+		).HumanoidRootPart.TextureID;
 	}
-	private listenToAccessories() {
-		this.instance.GetAttributeChangedSignal("HeadWear").Connect(() => {
-			print("HeadWear changed");
-			this.mountAccessories();
-		});
+
+	private equipAccessory(
+		appearanceRig: QuirkymalAppearance,
+		accessory: "Backwear" | "Facewear" | "Headwear",
+		item: string | undefined,
+	) {
+		if (accessory === "Facewear") return;
+		if (item === undefined) return;
+
+		let accessoryMesh = ReplicatedStorage.Assets.Accessories[accessory].FindFirstChild(item) as {
+			Attachment: Attachment;
+		} & MeshPart;
+		if (!accessoryMesh) return;
+
+		const existingAccessory = appearanceRig.FindFirstChild(`${accessory}Accessory`);
+		if (existingAccessory) {
+			existingAccessory.Destroy();
+		}
+
+		accessoryMesh = accessoryMesh.Clone();
+		accessoryMesh.Name = `${accessory}Accessory`;
+		accessoryMesh.Parent = appearanceRig;
+
+		const rigSize = appearanceRig.HumanoidRootPart.Size.Magnitude;
+		const scale = rigSize / baseModelSize;
+		accessoryMesh.Size = accessoryMesh.Size.mul(scale);
+
+		const root = appearanceRig.HumanoidRootPart.root;
+		if (!root) return;
+
+		const bone = root.body[accessory];
+		const rigidConstraint = new Instance("RigidConstraint");
+		rigidConstraint.Attachment0 = bone;
+		rigidConstraint.Attachment1 = accessoryMesh.Attachment;
+		rigidConstraint.Parent = accessoryMesh;
 	}
+
+	// private listenToAccessories() {
+	// 	this.instance.GetAttributeChangedSignal("HeadWear").Connect(() => {
+	// 		print("HeadWear changed");
+	// 		this.equipAccessory("Headwear", this.attributes.HeadWear);
+	// 	});
+	// }
 }
